@@ -8,6 +8,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 contract GameItem is ERC721URIStorage {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
+    mapping(address => uint) counts;
 
     constructor() ERC721("GameItem", "ITM") {}
 
@@ -15,6 +16,8 @@ contract GameItem is ERC721URIStorage {
         public
         returns (uint256)
     {
+        require(counts[player]<2,"Can't have more than 2 NFTS");
+        counts[player]++;
         uint256 newItemId = _tokenIds.current();
         _mint(player, newItemId);
         _setTokenURI(newItemId, tokenURI);
